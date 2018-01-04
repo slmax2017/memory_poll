@@ -11,6 +11,19 @@
 #define bzero(x, y) memset(x, 0, y)
 #endif
 
+#if __cplusplus < 201103
+#define decltype typeof
+#endif
+
+#define offset(type, member) \
+			(size_t)(&((type)0)->member)			
+
+#define entry(ptr, type, member)  \
+				({				   \
+					decltype(type) t = (decltype(type))(ptr); \
+					(decltype(t)) ((char *)t - offset(decltype(type), member));  \
+				 })
+
 typedef struct _tag_MemBlock_t MemBlock_t;
 typedef struct _tag_MemUnit_t MemUnit_t;
 typedef struct _tag_MemPool_t MemPool_t;
